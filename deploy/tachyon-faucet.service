@@ -1,0 +1,26 @@
+[Unit]
+Description=Tachyon Alpha Testnet faucet
+After=network-online.target zakura.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/tachyon-faucet
+ExecStart=/home/ubuntu/tachyon-faucet/.venv/bin/python -m tachyon_faucet --config /home/ubuntu/tachyon-faucet/config.local.toml
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+UMask=0077
+Restart=on-failure
+RestartSec=15
+TimeoutStopSec=30
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+# These directories must exist and match config.local.toml.
+ReadWritePaths=/home/ubuntu/tachyon-faucet-data/wallet /home/ubuntu/tachyon-faucet-data/state
+
+[Install]
+WantedBy=multi-user.target
